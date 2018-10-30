@@ -53,7 +53,21 @@ class LinearClassifier(object):
       # Hint: Use np.random.choice to generate indices. Sampling with         #
       # replacement is faster than sampling without replacement.              #
       #########################################################################
-      pass
+      
+      random_index = np.random.choice(range(num_train),num_train)
+      shuffle_X = X[random_index]
+      shuffle_y = y[random_index]
+      num_batch = int(num_train/batch_size)
+      if (num_batch < (num_train*1.0/batch_size)):
+            num_batch += 1
+      batch = it%num_batch
+      start_index = batch_size * batch
+      if (start_index + batch_size > num_train):
+        end_index = num_train
+      else:
+        end_index = start_index + batch_size
+      X_batch = shuffle_X[start_index:end_index]
+      y_batch = shuffle_y[start_index:end_index]
       #########################################################################
       #                       END OF YOUR CODE                                #
       #########################################################################
@@ -67,7 +81,7 @@ class LinearClassifier(object):
       # TODO:                                                                 #
       # Update the weights using the gradient and the learning rate.          #
       #########################################################################
-      pass
+      self.W -= grad*learning_rate
       #########################################################################
       #                       END OF YOUR CODE                                #
       #########################################################################
@@ -96,7 +110,8 @@ class LinearClassifier(object):
     # TODO:                                                                   #
     # Implement this method. Store the predicted labels in y_pred.            #
     ###########################################################################
-    pass
+    score = np.dot(X,self.W)
+    y_pred = np.argmax(score,axis = 1)
     ###########################################################################
     #                           END OF YOUR CODE                              #
     ###########################################################################
